@@ -45,6 +45,7 @@ export default function Home() {
           },
         },
       });
+      window.location.reload();
     }
     if (error) {
       toast.error("Transaction Failed");
