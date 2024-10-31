@@ -17,7 +17,6 @@ export default function Home() {
     address: bookingAddress,
     functionName: "getAllRooms",
   });
-  
 
   const { data: balanceData } = useReadContract({
     abi: tokenAbi,
@@ -26,6 +25,14 @@ export default function Home() {
     args:[address]
   });
 
+  const { data: allowData } = useReadContract({
+    abi: tokenAbi,
+    address: tokenAddress,
+    functionName: "allowance",
+    args:[address,address]
+  });
+
+  
 
   const { data: hash, isPending, writeContractAsync,error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } =useWaitForTransactionReceipt({hash,});
@@ -71,7 +78,22 @@ export default function Home() {
     }
   };
 
-    // 将字符串转换为数字的方法
+  const setAprove = async () => {
+    try {
+      const getTokenTx = await writeContractAsync({
+        address: tokenAddress,
+        abi: tokenAbi,
+        functionName: "approve",
+        args: [address,100 * (10 ** 18)],
+      });
+      console.log("getToken hash:", getTokenTx);
+    } catch (err: any) {
+      toast.error("Transaction Failed: " + err.message);
+      console.log("Transaction Failed: " + err.message);
+    }
+  };
+
+  // 将字符串转换为数字的方法
   const parseStringToNumber = (value: string | undefined | null): number => {
     if (value === undefined || value === null) {
       return 0; // 处理空值，返回 0 或其他默认值
@@ -79,23 +101,27 @@ export default function Home() {
     const parsedValue = parseFloat(value);
     return isNaN(parsedValue) ? 0 : parsedValue; // 如果解析失败，返回 0
   };
-  
+
   return (
     <main>
       <section className="py-12 flex  items-center justify-between ">
-        <h1 className="text-lg font-bold">Owner actions</h1>
+        <h1 className="text-lg font-bold"> actions </h1>
         <div className="flex items-center gap-2">
           <AddRoomModal>
-            <Button>Add room</Button>
+            <Button>Add room - only Owner </Button>
           </AddRoomModal>
 
           {/* <Button>Set availability</Button> */}
-          <Button onClick={getToken}>Get Token</Button>
+          <Button onClick={getToken}>Get Token 获取代币</Button>
+          <Button onClick={setAprove}>Set Aprove 得到授权额度</Button>
         </div>
       </section>
       <section className="py-4">
         {balanceData !== undefined && balanceData !== null && (
-          <h2 className="text-lg font-semibold">Balance: {(parseStringToNumber(balanceData.toString())/10 **18)+""}</h2>
+          <h2 className="text-lg font-semibold">余额  Balance: {(parseStringToNumber(balanceData.toString())/10 **18)+""}</h2>
+        )}
+        {allowData !== undefined && allowData !== null && (
+          <h2 className="text-lg font-semibold">授权额度  allowance: {(parseStringToNumber(allowData.toString())/10 **18)+""}</h2>
         )}
       </section>
       <div>
