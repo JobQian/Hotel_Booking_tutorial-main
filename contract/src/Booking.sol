@@ -85,9 +85,7 @@ contract HotelBooking {
         uint256 senderBalance = token.balanceOf(msg.sender);
         require(senderBalance >= totalPrice* 10 ** 18, "Insufficient balance");
         
-        // token.transfer(address(0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266), 10);
-        // require(token.approve(msg.sender, totalPrice * 10 ** 18), "approve false");
-        // require(token.transferFrom(msg.sender, address(this), totalPrice * 10 ** 18), "Token transfer failed");
+        require(token.transferFrom(msg.sender, address(this), totalPrice * (10 ** 18)), "Token transfer failed");
         
         roomBookings[roomId] = Booking({
             guest: msg.sender,
