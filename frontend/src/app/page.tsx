@@ -19,9 +19,11 @@ export default function Home() {
   });
   
 
-  const { data: balanceData } = useBalance ({
+  const { data: balanceData } = useReadContract({
+    abi: tokenAbi,
     address: tokenAddress,
-    chainId: chainId,
+    functionName: "balanceOf",
+    args:[address]
   });
 
 
