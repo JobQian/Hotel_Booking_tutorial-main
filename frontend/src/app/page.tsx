@@ -29,7 +29,7 @@ export default function Home() {
     abi: tokenAbi,
     address: tokenAddress,
     functionName: "allowance",
-    args:[address,address]
+    args:[address,bookingAddress]
   });
 
   
@@ -84,7 +84,7 @@ export default function Home() {
         address: tokenAddress,
         abi: tokenAbi,
         functionName: "approve",
-        args: [address,100 * (10 ** 18)],
+        args: [bookingAddress,100 * (10 ** 18)],
       });
       console.log("getToken hash:", getTokenTx);
     } catch (err: any) {
