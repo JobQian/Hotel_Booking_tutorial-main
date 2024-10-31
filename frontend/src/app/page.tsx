@@ -80,13 +80,13 @@ export default function Home() {
 
   const setAprove = async () => {
     try {
-      const getTokenTx = await writeContractAsync({
+      const setAproveTx = await writeContractAsync({
         address: tokenAddress,
         abi: tokenAbi,
         functionName: "approve",
         args: [bookingAddress,100 * (10 ** 18)],
       });
-      console.log("getToken hash:", getTokenTx);
+      console.log("getToken hash:", setAproveTx);
     } catch (err: any) {
       toast.error("Transaction Failed: " + err.message);
       console.log("Transaction Failed: " + err.message);
