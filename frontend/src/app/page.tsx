@@ -95,7 +95,7 @@ export default function Home() {
       </section>
       <section className="py-4">
         {balanceData !== undefined && balanceData !== null && (
-          <h2 className="text-lg font-semibold">Balance: {balanceData.value}</h2>
+          <h2 className="text-lg font-semibold">Balance: {(parseStringToNumber(balanceData.toString())/10 **18)+""}</h2>
         )}
       </section>
       <div>
