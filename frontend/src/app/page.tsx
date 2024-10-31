@@ -71,6 +71,15 @@ export default function Home() {
     }
   };
 
+    // 将字符串转换为数字的方法
+  const parseStringToNumber = (value: string | undefined | null): number => {
+    if (value === undefined || value === null) {
+      return 0; // 处理空值，返回 0 或其他默认值
+    }
+    const parsedValue = parseFloat(value);
+    return isNaN(parsedValue) ? 0 : parsedValue; // 如果解析失败，返回 0
+  };
+  
   return (
     <main>
       <section className="py-12 flex  items-center justify-between ">
