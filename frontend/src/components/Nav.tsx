@@ -23,10 +23,9 @@ export default function Nav() {
               className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
               href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
               target="_blank"
-              rel="noopener noreferrer"
-            >
+              rel="noopener noreferrer">
               <Image
-                src="/pex.png"
+                src="/chain1.png"
                 alt="PEX Logo"
                 className="dark:invert"
                 width={100}
@@ -37,7 +36,7 @@ export default function Nav() {
           </li>
 
           <li>
-            <h1 className="text-2xl font-bold">Hotel Booking Dapp</h1>
+            <h1 className="text-4xl font-bold">Hotel Booking Dapp</h1>
           </li>
           <li>
             <div className="flex items-center gap-3">
