@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
-import { bookingAbi, bookingAddress, tokenAbi, tokenAddress, } from "@/constants";
-import { useReadContract,useWaitForTransactionReceipt,useWriteContract,useAccount,useBalance  } from "wagmi";
+import { bookingAbi, bookingAddress, tokenAbi, tokenAddress } from "@/constants";
+import { useReadContract,useWaitForTransactionReceipt,useWriteContract,useAccount,useBalance } from "wagmi";
 import RoomCard from "@/components/RoomCard";
 import AddRoomModal from "@/components/AddRoomModal";
 import { toast } from "sonner";
@@ -25,14 +25,18 @@ export default function Home() {
     args:[address]
   });
 
+  const { data: totalData } = useReadContract({
+    abi: tokenAbi,
+    address: tokenAddress,
+    functionName: "totalSupply"
+  });
+
   const { data: allowData } = useReadContract({
     abi: tokenAbi,
     address: tokenAddress,
     functionName: "allowance",
     args:[address,bookingAddress]
   });
-
-  
 
   const { data: hash, isPending, writeContractAsync,error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } =useWaitForTransactionReceipt({hash,});
@@ -105,8 +109,8 @@ export default function Home() {
   return (
     <main>
       <section className="py-12 flex  items-center justify-between ">
-        <h1 className="text-lg font-bold"> actions </h1>
-        <div className="flex items-center gap-2">
+        <h1 className="text-lg font-bold"></h1>
+        <div className="flex items-center gap-2 mr-6">
           <AddRoomModal>
             <Button>Add room - only Owner </Button>
           </AddRoomModal>
@@ -117,11 +121,14 @@ export default function Home() {
         </div>
       </section>
       <section className="py-4">
+        {totalData !== undefined && totalData !== null && (
+          <h2 className="text-lg font-semibold ml-6">代币总量  totalSupply: {(parseStringToNumber(totalData.toString())/10 **18)+" HTK"}</h2>
+        )}
         {balanceData !== undefined && balanceData !== null && (
-          <h2 className="text-lg font-semibold">余额  Balance: {(parseStringToNumber(balanceData.toString())/10 **18)+""}</h2>
+          <h2 className="text-lg font-semibold mb-6 mr-6 text-right">本账户余额  Balance: {(parseStringToNumber(balanceData.toString())/10 **18)+" HTK"}</h2>
         )}
         {allowData !== undefined && allowData !== null && (
-          <h2 className="text-lg font-semibold">授权额度  allowance: {(parseStringToNumber(allowData.toString())/10 **18)+""}</h2>
+          <h2 className="text-lg font-semibold  text-right mr-6">本账户授权额度  allowance: {(parseStringToNumber(allowData.toString())/10 **18)+" HTK"}</h2>
         )}
       </section>
       <div>
